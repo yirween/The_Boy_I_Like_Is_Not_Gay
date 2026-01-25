@@ -1,0 +1,17 @@
+---
+const { dynamicTime, tags } = Astro.props;
+---
+
+
+<div class="dynamicCard">
+    <div class="dynamicCard-time">{dynamicTime}</div>
+
+    <div class="dynamicCard-text">
+        <slot />
+    </div>
+
+    {tags.map(tag => (
+        <span class="dynamicCard-tag">{tag}</span>
+    ))}
+
+</div>

@@ -1,0 +1,39 @@
+---
+const { url, img, title, detail, works, tags } = Astro.props;
+
+const normalizedWorks = Array.isArray(works)
+  ? works
+  : works
+  ? Object.entries(works as Record<string, { workURL: string; workCover: string }>).map(
+      ([workTitle, work]) => ({ workTitle, ...work })
+    )
+  : [];
+---
+
+
+<a class="shareCard" href={url} target="_blank" rel="noopener noreferrer">
+    <div class="shareCard-img"><img src={img} alt={title} /></div>
+
+    <div class="shareCard-info">
+        <div class="shareCard-name">{title}</div>
+        <div class="shareCard-detail">{detail}</div>
+    </div>
+
+    <div class="shareCard-middleLine"></div>
+
+    <div class="shareCard-works">
+        {normalizedWorks.map((work) => (
+            <button
+                class="shareCard-works-work"
+                type="button"
+                onclick={`window.open(${JSON.stringify(work.workURL)}, '_blank')`}
+                onkeydown={`if(event.key === 'Enter'){window.open(${JSON.stringify(work.workURL)}, '_blank')}`}
+            >
+                <img class="shareCard-works-work-workCover" src={work.workCover} alt={work.workTitle} />
+                <span class="shareCard-works-work-workTitle">{work.workTitle}</span>
+            </button>
+        ))}
+        <!-- <div class="shareCard-works-scrollLeft"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M14.41 18.16L8.75 12.5l5.66-5.66l.7.71l-4.95 4.95l4.95 4.95z"/></svg></div>
+        <div class="shareCard-works-scrollRight"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m8.59 18.16l5.66-5.66l-5.66-5.66l-.7.71l4.95 4.95l-4.95 4.95z"/></svg></div> -->
+    </div>
+</a>
