@@ -1,0 +1,89 @@
+---
+const commentDew = Astro.props.commentDew || "";
+const id = `commentDew-${Math.random().toString(36).slice(2,8)}`;
+---
+
+<span id={id} class="commentDew-sourceText">
+  <slot />
+  <sup aria-hidden="true">[注]</sup>
+  
+    <div class="dew" aria-hidden="true"><div class="zhu">注</div><div class="dew-main">{commentDew}</div></div>
+</span>
+
+<style>
+  sup { font-size: .6em; margin-left: 6px; }
+</style>
+
+<script type="module">
+if (typeof window !== 'undefined') {
+  const inited = new WeakSet();
+
+  function initRoot(root) {
+    if (!root || inited.has(root)) return;
+    const dewEl = root.querySelector('.dew');
+    const mainEl = root.querySelector('.dew-main');
+    if (!dewEl || !mainEl) return;
+
+    const updateDewPosition = () => {
+      const height = mainEl.offsetHeight || 0;
+      dewEl.style.top = `${height}px`;
+    };
+
+    let ro = null;
+    try {
+      ro = new ResizeObserver(updateDewPosition);
+      ro.observe(mainEl);
+    } catch (e) {
+      ro = null;
+    }
+
+    const mo = new MutationObserver(updateDewPosition);
+    mo.observe(root, { childList: true, subtree: true, characterData: true });
+
+    window.addEventListener('resize', updateDewPosition);
+
+    // initial
+    requestAnimationFrame(() => setTimeout(updateDewPosition, 0));
+
+    const cleanup = () => {
+      try { mo.disconnect(); } catch (e) {}
+      try { ro && ro.disconnect(); } catch (e) {}
+      window.removeEventListener('resize', updateDewPosition);
+      try { delete root._commentDewCleanup; } catch (e) {}
+    };
+
+    // attach cleanup and mark inited
+    if (root._commentDewCleanup) {
+      try { root._commentDewCleanup(); } catch (e) {}
+    }
+
+    root._commentDewCleanup = cleanup;
+    inited.add(root);
+
+    // ensure cleanup on unload
+    window.addEventListener('beforeunload', cleanup);
+    window.addEventListener('unload', cleanup);
+  }
+
+  // initialize all current instances
+  document.querySelectorAll('.commentDew-sourceText').forEach(initRoot);
+
+  // observe DOM for dynamically added instances
+  try {
+    const bodyMo = new MutationObserver((records) => {
+      for (const r of records) {
+        for (const node of Array.from(r.addedNodes)) {
+          if (!(node instanceof Element)) continue;
+          if (node.matches && node.matches('.commentDew-sourceText')) initRoot(node);
+          node.querySelectorAll && node.querySelectorAll('.commentDew-sourceText').forEach(initRoot);
+        }
+      }
+    });
+    bodyMo.observe(document.body, { childList: true, subtree: true });
+    // keep bodyMo reference on window for potential cleanup (optional)
+    window.__commentDewBodyMo = bodyMo;
+  } catch (e) {
+    // ignore
+  }
+}
+</script>

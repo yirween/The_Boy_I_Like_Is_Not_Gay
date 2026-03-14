@@ -164,7 +164,8 @@ html, body {
 
     .left-bar-item-title {
         transform: translateY(calc(-50% - 1.3rem));
-        color: #e8e4e4;
+        color: #f9f5f5;
+        font-weight: 600;
     }
 
     .left-bar-item-detial {
@@ -205,6 +206,7 @@ html, body {
     background-position: top right;
     background-size: 16px 16px;
     padding-right: 20px;
+    z-index: auto;
 }
 
 
@@ -286,6 +288,7 @@ html, body {
 .dynamicCard {
     width: 100%;
     padding: 16px;
+    margin: 16px;
     border-radius: 8px;
     box-shadow: 0px 0px 3px #112d4e30;
     background-color: #fdfdfd;
@@ -482,5 +485,50 @@ html, body {
 
     .shareCard-works-work-workTitle {
         overflow: visible;
+    }
+}
+
+/* ----------------------------- */
+/*               露              */
+/* ----------------------------- */
+
+.dew {
+    width: 30px;
+    height: 30px;
+    background-color: #e2e2e2a1;
+    border-radius: 50%;
+    box-shadow: 
+        inset 1px 2px 6px #ffffff,
+        0 5px 20px #00000061,
+        0 0 10px #fff;
+    overflow: hidden;
+    position: absolute;
+    right: 50px;
+    transition: height .367s, width .367s, box-shadow .367s, background-color .367s, border-radius 1s;
+}
+
+.zhu {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #aaa;
+    margin: .2rem calc((30px - 1rem) / 2);
+    transition: opacity .2s;
+}
+
+.commentDew-sourceText:hover .dew, .dew:hover {
+    height: 500px;
+    width: 255px;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 
+        inset 1px -2px 5px #55555500,
+        0 0px 8px #00000024,
+        0 0 10px #ffffff00;
+    transition: height .367s, width .367s, box-shadow .367s, background-color .367s, border-radius .1s;
+
+    .zhu {
+        opacity: 0;
+        transition: opacity .1s;
     }
 }

@@ -62,14 +62,14 @@ const { pageTitle } = Astro.props;
             <div class="left-bar-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="m12.012 5.572l-1.087-1.087a5.5 5.5 0 1 0-7.778 7.778l8.839 8.839l.002-.002l.026.026l8.839-8.839a5.5 5.5 0 1 0-7.778-7.778zm-.024 12.7l4.936-4.937l1.45-1.4h.002l1.063-1.062a3.5 3.5 0 1 0-4.95-4.95L12.013 8.4l-.007-.007h-.001L9.511 5.9a3.5 3.5 0 1 0-4.95 4.95l2.54 2.54l.001-.003z" clip-rule="evenodd"/></svg></div>
             <div class="left-bar-item-text">
                 <div class="left-bar-item-title">收藏</div>
-                <div class="left-bar-item-detial">在互联网上收集的宝藏！</div>
+                <div class="left-bar-item-detial">❤站❤长❤推❤荐❤</div>
             </div>
             <div class="trans-ball"></div>
         </a>
-        <div class="left-bar-vrMode">
+        <!-- <div class="left-bar-vrMode">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g fill="currentColor"><path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/><path d="M4.508 11h1.429l1.99-5.999H6.61L5.277 9.708H5.22L3.875 5.001H2.5zm6.387-5.999H8.5V11h1.173V8.763h1.064L11.787 11h1.327L11.91 8.583C12.455 8.373 13 7.779 13 6.9c0-1.147-.773-1.9-2.105-1.9zm-1.222 2.87V5.933h1.05c.63 0 1.05.347 1.05.989c0 .633-.408.95-1.067.95z"/></g></svg>
             <div class="left-bar-veMode-title">vr模式</div>
-        </div>
+        </div> -->
     </nav>
     <main class="right-mainPage">
     <!-- -------------------------------------------- -->
@@ -89,6 +89,42 @@ const { pageTitle } = Astro.props;
             <img style="width:85px;height:25px;" src="https://www.busuanzi.cc/static/images/bsz-tongji.png">
         </a>    
     </div>
+    <!-- 打开页面左侧栏固定展开 -->
+     <!-- <style id="initial-style">
+        .left-bar {
+            width: 300px !important;
+            animation: none !important;
+        }
+
+        .left-bar-item-icon {
+            width: 61px !important;
+            height: 61px !important;
+        }
+
+        .left-bar-item-icon > svg {
+            color: #333 !important;
+        }
+
+        .maintext {
+            padding: calc(100vw - 150px) !important;
+        }
+
+        .left-bar-vrMode > svg {
+            color: #1f1f1f !important;
+        }
+
+     </style> -->
+
+     <script>
+        // 等页面加载完成后移除初始样式
+            setTimeout(() => {
+            const initialStyle = document.getElementById('initial-style');
+            if (initialStyle) {
+                initialStyle.remove();
+            }
+        }, 10000);
+     </script>
+
     <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer></script>
 </body>
 </html>

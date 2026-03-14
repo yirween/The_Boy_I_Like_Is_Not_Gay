@@ -12,7 +12,7 @@ const normalizedWorks = Array.isArray(works)
 
 
 <a class="shareCard" href={url} target="_blank" rel="noopener noreferrer">
-    <div class="shareCard-img"><img src={img} alt={title} /></div>
+    <div class="shareCard-img"><img src={img} alt={title} loading="lazy" /></div>
 
     <div class="shareCard-info">
         <div class="shareCard-name">{title}</div>
@@ -29,7 +29,7 @@ const normalizedWorks = Array.isArray(works)
                 onclick={`window.open(${JSON.stringify(work.workURL)}, '_blank')`}
                 onkeydown={`if(event.key === 'Enter'){window.open(${JSON.stringify(work.workURL)}, '_blank')}`}
             >
-                <img class="shareCard-works-work-workCover" src={work.workCover} alt={work.workTitle} />
+                <img class="shareCard-works-work-workCover" src={work.workCover} alt={work.workTitle} loading="lazy" />
                 <span class="shareCard-works-work-workTitle">{work.workTitle}</span>
             </button>
         ))}
