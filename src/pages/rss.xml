@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RSS根元素，指定版本为2.0 -->
+<rss version="2.0">
+  <!-- channel元素：描述频道（整个Feed）的信息 -->
+  <channel>
+    <title>Yirween</title>                 <!-- Feed的标题 -->
+    <link>https://www.yirween.com/</link>  <!-- 对应网站的主页URL -->
+    <description>Yirween的小站！</description> <!-- 简短的网站描述 -->
+    <language>zh-cn</language>             <!-- 语言代码（可选） -->
+    <pubDate>Sat, 14 Mar 2026 21:35:00 +0800</pubDate>      <!-- 文章发布时间 -->
+    <lastBuildDate>Sat, 14 Mar 2026 21:35:00 +0800</lastBuildDate> <!-- 最后更新时间 -->
+
+    <!-- 2026-03-14 动态 -->
+    <item>
+      <title>动态 — 2026-03-14 21:35</title>
+      <link>https://www.yirween.com/dynamic#2026-03-14-2135</link>
+      <description>今天是π日！ 周末...从这周开始周末的时间少了呢，返校时间提前到周日12点了... 不过我这次在周末之前就把作业都做完了呢！地理放掉之后时间变多了一些，可以有时间做更多的练习。</description>
+      <pubDate>Sat, 14 Mar 2026 21:35:00 +0800</pubDate>
+      <guid>https://www.yirween.com/dynamic#2026-03-14-2135</guid>
+    </item>
+
+    <!-- 2026-03-02 动态 -->
+    <item>
+      <title>动态 — 2026-03-02 21:35</title>
+      <link>https://www.yirween.com/dynamic#2026-03-02-2135</link>
+      <description>上个学期买的数位板终于到了！ 今天是调休，可恶的调休让我错过了演出。家里换宽带了，装宽带的人中途离开导致我断网好几小时。</description>
+      <pubDate>Mon, 02 Mar 2026 21:35:00 +0800</pubDate>
+      <guid>https://www.yirween.com/dynamic#2026-03-02-2135</guid>
+    </item>
+
+    <!-- 2026-02-12 动态 -->
+    <item>
+      <title>动态 — 2026-02-12 22:20</title>
+      <link>https://www.yirween.com/dynamic#2026-02-12-2220</link>
+      <description>今天在VRC交到了第一个外国朋友——一个日本的，一个法国的，虽然交流有点困难，但感觉很新鲜。</description>
+      <pubDate>Thu, 12 Feb 2026 22:20:00 +0800</pubDate>
+      <guid>https://www.yirween.com/dynamic#2026-02-12-2220</guid>
+    </item>
+
+    <!-- 2026-02-03 动态 -->
+    <item>
+      <title>动态 — 2026-02-03 20:53</title>
+      <link>https://www.yirween.com/dynamic#2026-02-03-2053</link>
+      <description>今天期末考！坐在我边上的考生散发异味，考试两场很累，不过数学题目都做对了，感觉不错。</description>
+      <pubDate>Tue, 03 Feb 2026 20:53:00 +0800</pubDate>
+      <guid>https://www.yirween.com/dynamic#2026-02-03-2053</guid>
+    </item>
+
+    <!-- 2026-01-25 动态 -->
+    <item>
+      <title>动态 — 2026-01-25 22:31</title>
+      <link>https://www.yirween.com/dynamic#2026-01-25-2231</link>
+      <description>今天翻新了我的小站，重写后更简洁。最近看了直播并了解了一些多意识体相关内容，想把纸质日记本数字化但感觉工作量很大。</description>
+      <pubDate>Sun, 25 Jan 2026 22:31:00 +0800</pubDate>
+      <guid>https://www.yirween.com/dynamic#2026-01-25-2231</guid>
+    </item>
+
+  </channel>
+</rss>
