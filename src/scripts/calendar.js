@@ -15,6 +15,11 @@ function getFirstDayOfMonth(year, month) {
   return new Date(year, month, 1).getDay();
 }
 
+// 获取这个月最后一天是星期几
+function getLastDayOfMonth(year, month) {
+  return new Date(year, month + 1, 0).getDay();
+}
+
 // 获取这个月有多少天
 function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
@@ -32,6 +37,7 @@ function renderCalendar(year, month) {
   for (let i = 0; i < firstDay; i++) {
     const dayElement = document.createElement('div');
     dayElement.classList.add('calendar-day');
+    dayElement.textContent = '·';
     calendarBody.appendChild(dayElement);
   }
 
@@ -54,6 +60,32 @@ function renderCalendar(year, month) {
     dayElement.textContent = i;
     calendarBody.appendChild(dayElement);
   }
+
+  // 添加最后空白占位符
+  const lastDay = getLastDayOfMonth(year, month);
+  for (let i = lastDay + 1; i <= 6; i++) {
+    const dayElement = document.createElement('div');
+    dayElement.classList.add('calendar-day');
+    dayElement.textContent = '·';
+    calendarBody.appendChild(dayElement);
+  }
 }
 
+// 切换月份
+function changeMonth(offset) {
+  let newMonth = month + offset;
+  let newYear = year;
+
+  if (newMonth < 0) {
+    newMonth = 11;
+    newYear--;
+  } else if (newMonth > 11) {
+    newMonth = 0;
+    newYear++;
+  }
+
+  renderCalendar(newYear, newMonth);
+}
+
+// 初始化日历
 renderCalendar(year, month);
