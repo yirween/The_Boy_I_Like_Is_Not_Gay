@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特勒根吸收量表 (TAS) - 28题版</title>
+    <style>
+        :root {
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #5a5a7a;
+            --text-muted: #8a8a9e;
+            --primary: #4a6fa5;
+            --primary-light: #e8eef6;
+            --primary-dark: #3a5680;
+            --border: #e2e4ea;
+            --border-hover: #bcc3d4;
+            --selected-bg: #e8eef6;
+            --selected-border: #4a6fa5;
+            --selected-text: #3a5680;
+            --accent-high: #5a8a6a;
+            --accent-mid: #c8956c;
+            --accent-low: #8a7a9a;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+        .header-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+        .header-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .progress-wrap {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .progress-bar-outer {
+            width: 120px;
+            height: 6px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 99px;
+            transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+        .progress-text {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            min-width: 48px;
+            text-align: right;
+        }
+
+        /* ========== Main Container ========== */
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 16px 16px 40px;
+        }
+
+        /* ========== Instructions ========== */
+        .instructions {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .instructions p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .instructions .scale-hint {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            margin-top: 12px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .scale-hint span {
+            background: #f8f9fb;
+            border-radius: 99px;
+            padding: 3px 10px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        /* ========== Question Card ========== */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .question-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+        .question-card.answered {
+            border-left: 3px solid var(--primary-light);
+        }
+        .question-card.answered.has-value {
+            border-left-color: var(--primary);
+        }
+        .question-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .question-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .options-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 7px 13px;
+            border-radius: 99px;
+            border: 1.5px solid var(--border);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            white-space: nowrap;
+            background: #fafbfc;
+            min-width: 42px;
+            text-align: center;
+        }
+        .option-label:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #f8faff;
+        }
+        .option-label:active {
+            transform: scale(0.96);
+        }
+        .option-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+        .option-input:checked+.option-label {
+            background: var(--selected-bg);
+            border-color: var(--selected-border);
+            color: var(--selected-text);
+            font-weight: 600;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.08);
+        }
+        .option-input:focus-visible+.option-label {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* ========== Results Panel ========== */
+        .results-panel {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition);
+        }
+        .results-panel.incomplete {
+            opacity: 0.75;
+        }
+        .results-panel.complete {
+            border-color: var(--primary-light);
+        }
+        .results-header {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .results-header .icon {
+            font-size: 1.3rem;
+        }
+        .score-display {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .score-number {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary-dark);
+            line-height: 1;
+        }
+        .score-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .score-level {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 10px;
+        }
+        .level-high {
+            background: #fdf2f0;
+            color: #b85c4a;
+        }
+        .level-moderate-high {
+            background: #fef7ed;
+            color: #b87a3a;
+        }
+        .level-moderate {
+            background: #f4f6fb;
+            color: #4a6fa5;
+        }
+        .level-moderate-low {
+            background: #f5f7f2;
+            color: #5a7a5a;
+        }
+        .level-low {
+            background: #f8f6fa;
+            color: #6a5a7a;
+        }
+        .score-bar-wrap {
+            background: #eef0f4;
+            border-radius: 99px;
+            height: 10px;
+            margin: 14px 0;
+            position: relative;
+            overflow: visible;
+        }
+        .score-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8a9ec0, #4a6fa5);
+            border-radius: 99px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .score-bar-marker {
+            position: absolute;
+            top: -4px;
+            width: 2px;
+            height: 18px;
+            background: #c0c8d4;
+            border-radius: 2px;
+        }
+        .marker-avg {
+            left: 30%;
+        }
+        .marker-mid {
+            left: 50%;
+        }
+        .marker-label {
+            position: absolute;
+            top: 16px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .detail-section {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+        .detail-section h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .detail-section ul {
+            list-style: none;
+            padding: 0;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .detail-section ul li::before {
+            content: '•';
+            margin-right: 8px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 2px;
+        }
+        .tag-high {
+            background: #fef3e8;
+            color: #b8703a;
+        }
+        .tag-low {
+            background: #f1f0f8;
+            color: #6b5e8a;
+        }
+        .disclaimer {
+            margin-top: 16px;
+            padding: 12px 14px;
+            background: #fdf8f0;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            color: #8a7a5a;
+            border: 1px solid #f0e8d4;
+            line-height: 1.5;
+        }
+        .btn-reset {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 10px 20px;
+            border-radius: 99px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-sans);
+        }
+        .btn-reset:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #fafcff;
+        }
+        .btn-reset:active {
+            transform: scale(0.97);
+        }
+
+        /* ========== Back to top ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 600px) {
+            .header {
+                padding: 14px 16px;
+            }
+            .header-title {
+                font-size: 1.05rem;
+            }
+            .progress-bar-outer {
+                width: 80px;
+                height: 5px;
+            }
+            .progress-text {
+                font-size: 0.7rem;
+                min-width: 36px;
+            }
+            .container {
+                padding: 10px 8px 32px;
+            }
+            .question-card {
+                padding: 14px 14px;
+                border-radius: var(--radius-sm);
+            }
+            .question-text {
+                font-size: 0.88rem;
+            }
+            .option-label {
+                padding: 6px 10px;
+                font-size: 0.73rem;
+                min-width: 34px;
+            }
+            .options-row {
+                gap: 4px;
+            }
+            .score-number {
+                font-size: 2.4rem;
+            }
+            .results-panel {
+                padding: 16px 14px;
+                border-radius: var(--radius);
+            }
+            .back-to-top {
+                bottom: 16px;
+                right: 12px;
+                width: 38px;
+                height: 38px;
+            }
+        }
+        @media (max-width: 380px) {
+            .option-label {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+                min-width: 28px;
+                border-radius: 8px;
+            }
+            .options-row {
+                gap: 3px;
+            }
+            .question-text {
+                font-size: 0.82rem;
+            }
+            .question-card {
+                padding: 10px 10px;
+            }
+        }
+
+        /* ========== Print ========== */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+                font-size: 11pt;
+            }
+            .header,
+            .back-to-top,
+            .btn-reset {
+                display: none !important;
+            }
+            .question-card {
+                break-inside: avoid;
+                border: 1px solid #ddd;
+                box-shadow: none;
+                margin-bottom: 4px;
+                padding: 10px 12px;
+            }
+            .results-panel {
+                box-shadow: none;
+                border: 2px solid #333;
+                margin-top: 16px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== Header ==================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div>
+                <div class="header-title">特勒根吸收量表 (TAS)</div>
+                <div class="header-subtitle">28题版 · 自评问卷</div>
+            </div>
+            <div class="progress-wrap">
+                <div class="progress-bar-outer">
+                    <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+                </div>
+                <span class="progress-text" id="progressText">0/28</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== Main Content ==================== -->
+    <main class="container">
+        <!-- 说明 -->
+        <div class="instructions">
+            <p>请仔细阅读以下每条陈述，并根据你<strong>平时的体验</strong>，选择最符合你的频率。答案没有对错之分。</p>
+            <div class="scale-hint">
+                <span>1 = 从不</span><span>2 = 很少</span><span>3 = 有时</span><span>4 = 经常</span><span>5 = 总是</span>
+            </div>
+        </div>
+
+        <!-- 题目列表 -->
+        <div id="questionsContainer">
+            <!-- 由JS动态生成 -->
+        </div>
+
+        <!-- 结果面板 -->
+        <div class="results-panel incomplete" id="resultsPanel">
+            <div class="results-header">
+                <span class="icon">📊</span> 测评结果
+            </div>
+            <div id="resultsContent">
+                <p style="color:var(--text-muted);font-size:0.88rem;">请完成上方所有28道题目后，查看完整分析。当前可查看实时分数。</p>
+            </div>
+            <div id="scorePreview" style="margin-top:8px;font-size:0.85rem;color:var(--text-secondary);"></div>
+            <button class="btn-reset" id="btnReset" title="清除所有选择">↻ 重新填写</button>
+        </div>
+    </main>
+
+    <!-- 回到顶部 -->
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+
+    <script>
+        (function() {
+            // ============ 题目数据 ============
+            const questions = [
+                { id: 1, text: '你是否会像童年时那样去感受和体验事物？' },
+                { id: 2, text: '你是否会被优美或富有诗意的语言深深打动？' },
+                { id: 3,
+                    text: '在看电影、电视或戏剧时，你是否会完全沉浸其中，以至于忘记自我和周围环境，仿佛故事是真实发生的？' },
+                { id: 4,
+                    text: '当你盯着一张图片再看别处时，是否有时眼前仍能"看见"该图片的影像，仿佛你还在看着它？' },
+                { id: 5, text: '你是否能感觉到自己的思想仿佛能包罗整个世界？' },
+                { id: 6, text: '你喜欢观察天空中云朵形状的变化吗？' },
+                { id: 7,
+                    text: '只要你愿意，你是否能想象出极其生动的事物，就像在看一部好电影或听一个好故事？' },
+                { id: 8, text: '当一些人谈论神秘体验时，你是否认为自己真正理解他们的意思？' },
+                { id: 9,
+                text: '你是否会"走出"平常的自我，体验到一种完全不同的存在状态？' },
+                { id: 10, text: '物体的质感——例如羊毛、沙子、木头——是否会让你联想到颜色或音乐？' },
+                { id: 11, text: '你能否体验到事物仿佛具有双重真实性？' },
+                { id: 12,
+                text: '当你听音乐时，是否会完全沉浸其中以至于注意不到其他任何事？' },
+                { id: 13,
+                text: '只要你愿意，你是否能想象自己的身体沉重得无法动弹？' },
+                { id: 14,
+                    text: '你是否能在实际看到或听到一个人之前，就莫名地感觉到他/她的存在？' },
+                { id: 15, text: '木柴燃烧时的噼啪声和火焰是否会激发你的想象力？' },
+                { id: 16,
+                    text: '当你沉浸于自然或艺术中时，是否会觉得自己的整个意识状态似乎被暂时改变了？' },
+                { id: 17, text: '不同的颜色对你有独特而特殊的意义吗？' },
+                { id: 18,
+                    text: '在做一项日常事务时，你是否会完全神游天外，以至于真的忘记自己正在做什么，几分钟后却发现已经完成了？' },
+                { id: 19,
+                text: '你是否能如此清晰、生动地回忆起某些过往经历，仿佛又重新经历了一次？' },
+                { id: 20,
+                text: '对一些别人看来可能毫无意义的事物，你是否常常能理解其意义？' },
+                { id: 21,
+                    text: '如果你在一部戏剧中表演，你是否认为自己能真实地感受到角色的情感，并暂时"成为"那个人，忘记自己和观众？' },
+                { id: 22, text: '你的思维是否常常以视觉图像而非文字的形式出现？' },
+                { id: 23,
+                    text: '你是否常因小事而感到愉悦（如肥皂泡上的色彩，以及横切苹果时出现的五角星形状）？' },
+                { id: 24,
+                text: '在听管风琴或其他恢弘的音乐时，你是否感觉自己仿佛被托举到了空中？' },
+                { id: 25, text: '你能否通过聆听的方式，将噪音化为音乐？' },
+                { id: 26, text: '你是否经历过"白日噩梦"（daymares）？' },
+                { id: 27,
+                text: '在你的梦中，人们有时会融合在一起或变成其他人吗？' },
+                { id: 28, text: '你能从一个梦醒来进入另一个梦吗？' },
+            ];
+
+            const totalQuestions = questions.length;
+            const minScore = totalQuestions; // 28
+            const maxScore = totalQuestions * 5; // 140
+            const midScore = totalQuestions * 3; // 84 (理论中值)
+            const avgLow = 60; // 一般人群均值下限
+            const avgHigh = 70; // 一般人群均值上限
+
+            // ============ DOM 引用 ============
+            const questionsContainer = document.getElementById('questionsContainer');
+            const resultsPanel = document.getElementById('resultsPanel');
+            const resultsContent = document.getElementById('resultsContent');
+            const scorePreview = document.getElementById('scorePreview');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const btnReset = document.getElementById('btnReset');
+            const backToTop = document.getElementById('backToTop');
+
+            // ============ 渲染题目 ============
+            function renderQuestions() {
+                questionsContainer.innerHTML = '';
+                questions.forEach(q => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card answered';
+                    card.id = 'q-card-' + q.id;
+                    card.innerHTML = `
+                        <div class="question-number">第 ${q.id} 题 / 共 ${totalQuestions} 题</div>
+                        <div class="question-text">${q.text}</div>
+                        <div class="options-row">
+                            ${[1,2,3,4,5].map(val => {
+                                const labels = ['从不', '很少', '有时', '经常', '总是'];
+                                return `
+                                    <input type="radio"
+                                           name="q${q.id}"
+                                           id="q${q.id}_v${val}"
+                                           value="${val}"
+                                           class="option-input"
+                                           data-qid="${q.id}">
+                                    <label for="q${q.id}_v${val}" class="option-label">${labels[val-1]}</label>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                    questionsContainer.appendChild(card);
+                });
+            }
+
+            // ============ 获取所有回答 ============
+            function getAllAnswers() {
+                const answers = {};
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selected) {
+                        answers[i] = parseInt(selected.value);
+                    }
+                }
+                return answers;
+            }
+
+            // ============ 计算统计 ============
+            function getStats(answers) {
+                const answeredIds = Object.keys(answers).map(Number);
+                const count = answeredIds.length;
+                if (count === 0) {
+                    return { count: 0, total: 0, avg: 0, highItems: [], lowItems: [], allComplete: false };
+                }
+                const values = Object.values(answers);
+                const total = values.reduce((sum, v) => sum + v, 0);
+                const avg = total / count;
+                const highItems = answeredIds.filter(id => answers[id] >= 4).sort((a, b) => answers[b] - answers[
+                    a]);
+                const lowItems = answeredIds.filter(id => answers[id] <= 2).sort((a, b) => answers[a] - answers[
+                b]);
+                return {
+                    count,
+                    total,
+                    avg: Math.round(avg * 10) / 10,
+                    highItems,
+                    lowItems,
+                    allComplete: count === totalQuestions,
+                };
+            }
+
+            // ============ 获取等级 ============
+            function getLevel(total) {
+                if (total <= 55) return { label: '低吸收倾向', cls: 'level-low',
+                    desc: '您的得分低于一般人群平均水平。您可能更倾向于务实、理性、以现实为导向的认知风格，不易沉浸于内在体验或外部感官刺激之中。' };
+                if (total <= 70) return { label: '中等偏低', cls: 'level-moderate-low',
+                    desc: '您的得分处于一般人群的常见范围内。您在日常生活中偶尔会沉浸于想象或审美体验，但整体上保持着较为现实的认知取向。' };
+                if (total <= 85) return { label: '中等', cls: 'level-moderate',
+                    desc: '您的得分接近理论中值，属于中等吸收倾向。您拥有一定的内在想象力和审美投入能力，在特定情境下能够深度沉浸，同时也能保持对现实的关注。' };
+                if (total <= 100) return { label: '中等偏高', cls: 'level-moderate-high',
+                    desc: '您的得分明显高于一般人群平均水平。您拥有丰富的内心世界，容易被艺术、音乐、自然所打动，注意力容易高度集中并沉浸其中。这种特质既可能通向创造力与高峰体验，也可能在应激条件下成为解离倾向的认知基础。' };
+                return { label: '高吸收倾向', cls: 'level-high',
+                    desc: '您的得分远高于一般人群，表明您拥有非常突出的吸收特质。您极容易沉醉于内在想象与外部审美体验，拥有生动鲜明的感官意象和深刻的情绪共鸣能力。这种高度的注意力沉浸能力是一把"双刃剑"——它既是创造力与共情力的源泉，也可能在面临压力时滑向解离状态。' };
+            }
+
+            // ============ 更新UI ============
+            function updateUI() {
+                const answers = getAllAnswers();
+                const stats = getStats(answers);
+                const count = stats.count;
+                const total = stats.total;
+                const allComplete = stats.allComplete;
+
+                // 进度条
+                const pct = Math.round((count / totalQuestions) * 100);
+                progressBar.style.width = pct + '%';
+                progressText.textContent = `${count}/${totalQuestions}`;
+
+                // 更新题目卡片状态
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const card = document.getElementById('q-card-' + i);
+                    if (card) {
+                        if (answers[i] !== undefined) {
+                            card.classList.add('has-value');
+                        } else {
+                            card.classList.remove('has-value');
+                        }
+                    }
+                }
+
+                // 分数预览
+                if (count > 0) {
+                    scorePreview.innerHTML = `
+                        <span style="font-weight:600;">当前得分：</span>
+                        <span style="font-size:1.1rem;font-weight:700;color:var(--primary-dark);">${total} 分</span>
+                        <span style="color:var(--text-muted);">（已答 ${count} 题，均分 ${stats.avg}）</span>
+                        ${!allComplete ? `<span style="color:#b85c4a;"> — 还剩 ${totalQuestions - count} 题未答</span>` : ''}
+                    `;
+                } else {
+                    scorePreview.innerHTML =
+                        '<span style="color:var(--text-muted);">尚未回答任何题目，请开始作答。</span>';
+                }
+
+                // 结果面板
+                if (allComplete && count === totalQuestions) {
+                    resultsPanel.classList.remove('incomplete');
+                    resultsPanel.classList.add('complete');
+                    const level = getLevel(total);
+                    const pctScore = Math.round((total - minScore) / (maxScore - minScore) * 100);
+
+                    // 生成高分/低分条目列表
+                    const highItemLabels = stats.highItems.map(id => {
+                        const q = questions.find(qq => qq.id === id);
+                        return `<span class="tag tag-high">题${id} (${answers[id]}分)</span> ${q ? q.text.slice(0,28)+'…' : ''}`;
+                    });
+                    const lowItemLabels = stats.lowItems.map(id => {
+                        const q = questions.find(qq => qq.id === id);
+                        return `<span class="tag tag-low">题${id} (${answers[id]}分)</span> ${q ? q.text.slice(0,28)+'…' : ''}`;
+                    });
+
+                    resultsContent.innerHTML = `
+                        <div class="score-display">
+                            <span class="score-number">${total}</span>
+                            <span class="score-label">/ ${maxScore} 分</span>
+                        </div>
+                        <span class="score-level ${level.cls}">${level.label}</span>
+                        <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:8px;">${level.desc}</p>
+
+                        <div class="score-bar-wrap">
+                            <div class="score-bar-fill" style="width:${pctScore}%;"></div>
+                            <div class="score-bar-marker marker-avg" style="left:${Math.round((avgLow-minScore)/(maxScore-minScore)*100)}%;"></div>
+                            <span class="marker-label" style="left:${Math.round((avgLow-minScore)/(maxScore-minScore)*100)}%;">一般均值~${avgLow}</span>
+                            <div class="score-bar-marker marker-mid" style="left:50%;"></div>
+                            <span class="marker-label" style="left:50%;">理论中值84</span>
+                        </div>
+                        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:22px;">▲ 蓝色进度条表示您的得分在量表范围中的位置</p>
+
+                        ${stats.highItems.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>🔺 高分条目（得分 ≥ 4，即"经常"或"总是"）</h4>
+                            <ul>${highItemLabels.map(l => `<li>${l}</li>`).join('')}</ul>
+                        </div>` : ''}
+
+                        ${stats.lowItems.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>🔻 低分条目（得分 ≤ 2，即"从不"或"很少"）</h4>
+                            <ul>${lowItemLabels.map(l => `<li>${l}</li>`).join('')}</ul>
+                        </div>` : ''}
+
+                        <div class="disclaimer">
+                            ⚠️ <strong>重要提示：</strong>本量表为自评工具，仅用于反映"吸收"这一人格特质的相对水平，<strong>并非临床诊断工具</strong>。高分不意味着存在心理障碍，低分也不代表缺乏想象力。高吸收特质与解离倾向存在关联，但两者并不等同。如果您对自己的心理健康状况有担忧，请咨询具备资质的精神卫生专业人员。
+                        </div>
+                    `;
+                } else if (count > 0 && !allComplete) {
+                    resultsPanel.classList.add('incomplete');
+                    resultsPanel.classList.remove('complete');
+                    resultsContent.innerHTML = `
+                        <p style="color:var(--text-muted);font-size:0.88rem;">
+                            📝 已答 <strong>${count}</strong> / <strong>${totalQuestions}</strong> 题。
+                            请完成全部题目后查看完整分析。
+                        </p>
+                    `;
+                } else {
+                    resultsPanel.classList.add('incomplete');
+                    resultsPanel.classList.remove('complete');
+                    resultsContent.innerHTML = `
+                        <p style="color:var(--text-muted);font-size:0.88rem;">
+                            请完成上方所有28道题目后，查看完整分析。
+                        </p>
+                    `;
+                }
+            }
+
+            // ============ 事件监听 ============
+            questionsContainer.addEventListener('change', function(e) {
+                if (e.target.classList.contains('option-input')) {
+                    updateUI();
+                    // 如果全部完成，平滑滚动到结果面板
+                    const answers = getAllAnswers();
+                    if (Object.keys(answers).length === totalQuestions) {
+                        setTimeout(() => {
+                            resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 150);
+                    }
+                }
+            });
+
+            // 重置按钮
+            btnReset.addEventListener('click', function() {
+                if (confirm('确定要清除所有选择并重新填写吗？此操作不可撤销。')) {
+                    const allInputs = document.querySelectorAll('.option-input');
+                    allInputs.forEach(inp => { inp.checked = false; });
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            // 回到顶部按钮
+            function handleBackToTopVisibility() {
+                if (window.scrollY > 500) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            }
+            window.addEventListener('scroll', handleBackToTopVisibility, { passive: true });
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ============ 初始化 ============
+            renderQuestions();
+            updateUI();
+            handleBackToTopVisibility();
+
+            console.log('✅ 特勒根吸收量表 (TAS) 28题版 已就绪');
+            console.log('   📊 总分范围：' + minScore + '–' + maxScore + ' | 理论中值：' + midScore);
+            console.log('   📝 完成所有题目后将自动显示完整分析');
+        })();
+    </script>
+</body>
+</html>
