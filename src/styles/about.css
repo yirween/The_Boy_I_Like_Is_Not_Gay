@@ -76,6 +76,33 @@
 -------------第二行-------------
 */
 
+/* 外框 */
+.introductionAndCalendar {
+    width: 68%;
+    margin-right: 4%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* 简单地报户口本 */
+.introduction {
+    width: calc(100% - 32px);
+    height: 5rem;
+    padding: 8px 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.self-introduction {
+    margin-top: 8px;
+    color: #0e181acb;
+    font-size: 1em;
+}
+
 /* 个人信息部分 */
 .details {
     width: 100%;
@@ -85,10 +112,8 @@
 
 /* 联系方式部分 */
 .content-card {
-    width: 23%;
-    height: 8rem;
+    width: 28%;
     padding: 8px 16px;
-    margin-right: 16px;
 }
 
 /* “联系方式”和“自我介绍”大标题 */
@@ -105,7 +130,6 @@
 
 /* 联系方式列表 */
 .content-list {
-    height: calc(8rem - 30px);
     overflow-y: scroll;
     overflow-x: visible;
 }
@@ -141,18 +165,7 @@
     margin-right: 8px;
 }
 
-/* 简单地报户口本 */
-.introduction {
-    width: calc(77% - 16px);
-    padding: 8px 16px;
-    border-top: 1px solid #eee;
-}
 
-.self-introduction {
-    margin-top: 8px;
-    color: #0e181acb;
-    font-size: 1em;
-}
 
 /* 
 -------------第三行-------------

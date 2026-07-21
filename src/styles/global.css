@@ -44,6 +44,7 @@ html, body {
     height: 61px;
     max-height: calc((100vh - 53px)/6);
     padding-bottom: 10px;
+    margin-top: 10px;
     border: 1px;
     border-color: #333;
     text-underline-offset: none;
@@ -83,7 +84,7 @@ html, body {
     transform: translateY(-50%);
     font-size: 1.2rem;
     font-weight: 500;
-    color: #0212169f;
+    color: #021216e3;
     transition: transform .2s, color .2s;
 }
 
