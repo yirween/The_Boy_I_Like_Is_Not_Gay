@@ -140,6 +140,36 @@ html, body {
     z-index: -5;
 } */
 
+/* 每个导航项里的小球 */
+.left-bar-item {
+    position: relative;
+}
+
+.left-bar-item-ball {
+    position: absolute;
+    left: 4px;
+    top: 44%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #59e4e8;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 2;
+}
+
+.left-bar-item:hover .left-bar-item-ball {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.left-bar-item.active .left-bar-item-ball {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* 展开动画 */
 .left-bar:hover {
     width: 300px;
@@ -178,7 +208,7 @@ html, body {
 
     .left-bar-item-title {
         transform: translateY(calc(-50% - 1.3rem));
-        color: #f9f5f5;
+        color: #f9f5f5 !important;
         font-weight: 600;
     }
 
@@ -186,6 +216,15 @@ html, body {
         opacity: 1;
         transform: translateY(calc(-50% - .8rem));
     }
+
+    .left-bar-item-ball {
+        opacity: 0;
+    }
+}
+
+.left-bar-item.active .left-bar-item-title {
+    color: #3f54c7;
+    font-weight: 700;
 }
 
 
