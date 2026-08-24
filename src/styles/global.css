@@ -376,6 +376,14 @@ html, body {
     box-shadow: 0px 1px 5px #112d4e94;
 }
 
+.dynamicCard img {
+    width: 100%;
+    height: auto;
+    margin-top: 8px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
 
 /* ----------------------------- */
 /*            分享卡片            */
