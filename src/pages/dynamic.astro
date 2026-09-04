@@ -14,6 +14,7 @@ const sortedDynamics = allDynamics.sort(
 
 <BaseLayout pageTitle="动态">
   <MainText>
+    <span style="margin-bottom: 1rem; margin-left: 1rem;">可以通过https://yirween.com/rss-dynamic.xml订阅yirween的动态喵</span>
     {
       sortedDynamics.map((entry) => {
         const date = entry.data.pubDate;
