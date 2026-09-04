@@ -10,13 +10,21 @@ export async function GET(context) {
     site: context.site,
     items: dynamics
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-      .map((entry) => ({
-        title: entry.data.title,
-        description: entry.data.description,
-        pubDate: entry.data.pubDate,
-        link: `${context.site}dynamic/#${entry.id}`,
-        author: entry.data.author,
-      })),
+      .map((entry) => {
+        const slug = entry.id
+          .replace(/\.md$/, '')
+          .split('/')
+          .map(encodeURIComponent)
+          .join('/');
+
+        return {
+          title: entry.data.title,
+          description: entry.data.description,
+          pubDate: entry.data.pubDate,
+          link: `${context.site}dynamic/${slug}/`,
+          author: entry.data.author,
+        };
+      }),
     customData: `<language>cn-zh</language>`,
   });
 }

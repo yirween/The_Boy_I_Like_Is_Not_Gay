@@ -28,7 +28,7 @@ const sortedPosts = allPosts
 ---
 <BaseLayout pageTitle="Blog">
   <MainText>
-    可以通过<a href="https://yirween.com/rss.xml" target="_blank">https://yirween.com/rss.xml</a>订阅yirween的博客喵
+    <span style="margin-bottom: 1rem; margin-left: 1rem;">可以通过<a style="color: #353535;" href="https://yirween.com/rss.xml" target="_blank" rel="noreferrer">https://yirween.com/rss.xml</a>订阅yirween的博客喵</span>
     {sortedPosts.map((post) => (
       <a href={post.url} class="postCard">{post.frontmatter.title}</a>
     ))}
