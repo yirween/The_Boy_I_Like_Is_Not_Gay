@@ -1,5 +1,10 @@
 ---
-const { dynamicTime, tags } = Astro.props;
+interface Props {
+    dynamicTime: string;
+    tags: string[];
+}
+
+const { dynamicTime, tags } = Astro.props as Props;
 ---
 
 

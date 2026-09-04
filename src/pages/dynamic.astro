@@ -30,4 +30,114 @@ const sortedDynamics = allDynamics.sort(
       })
     }
   </MainText>
+  <dialog class="image-viewer" aria-label="图片预览">
+    <button class="image-viewer-close" type="button" aria-label="关闭图片预览">×</button>
+    <div class="image-viewer-stage">
+      <img alt="" draggable="false" />
+    </div>
+  </dialog>
 </BaseLayout>
+
+<script>
+  const initImageGalleries = () => {
+    document.querySelectorAll<HTMLElement>('.dynamicCard-text').forEach((content) => {
+      if (content.querySelector('.dynamic-image-gallery')) return;
+
+      const images = [...content.querySelectorAll<HTMLImageElement>('img')];
+      if (images.length === 0) return;
+
+      const gallery = document.createElement('div');
+      gallery.className = 'dynamic-image-gallery';
+      gallery.setAttribute('aria-label', '动态图片');
+      gallery.addEventListener('click', (event) => event.stopPropagation());
+
+      images.forEach((image) => {
+        image.draggable = false;
+        gallery.append(image);
+      });
+      content.append(gallery);
+    });
+  };
+
+  const initImageViewer = () => {
+    const viewer = document.querySelector<HTMLDialogElement>('.image-viewer');
+    const viewerImage = viewer?.querySelector<HTMLImageElement>('img');
+    const closeButton = viewer?.querySelector<HTMLButtonElement>('.image-viewer-close');
+    const stage = viewer?.querySelector<HTMLElement>('.image-viewer-stage');
+    if (!viewer || !viewerImage || !closeButton || !stage || viewer.dataset.initialized === 'true') return;
+
+    viewer.dataset.initialized = 'true';
+    let scale = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+    let pointerId: number | null = null;
+    let startX = 0;
+    let startY = 0;
+
+    const updateImageTransform = () => {
+      viewerImage.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    };
+
+    const resetImageTransform = () => {
+      scale = 1;
+      offsetX = 0;
+      offsetY = 0;
+      viewerImage.style.transform = '';
+    };
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement) || !target.closest('.dynamicCard')) return;
+
+      viewerImage.src = target.currentSrc || target.src;
+      viewerImage.alt = target.alt || '动态图片预览';
+      resetImageTransform();
+      viewer.showModal();
+    });
+
+    closeButton.addEventListener('click', () => viewer.close());
+    viewerImage.addEventListener('dragstart', (event) => event.preventDefault());
+    viewer.addEventListener('wheel', (event) => {
+      if (event.target !== viewerImage) return;
+      event.preventDefault();
+      scale = Math.min(20, Math.max(0.5, scale * (event.deltaY < 0 ? 1.1 : 0.9)));
+      updateImageTransform();
+    }, { passive: false });
+
+    viewerImage.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      pointerId = event.pointerId;
+      startX = event.clientX - offsetX;
+      startY = event.clientY - offsetY;
+      viewerImage.setPointerCapture(pointerId);
+      viewerImage.classList.add('is-dragging');
+    });
+
+    viewerImage.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== pointerId) return;
+      offsetX = event.clientX - startX;
+      offsetY = event.clientY - startY;
+      updateImageTransform();
+    });
+
+    const stopDragging = (event: PointerEvent) => {
+      if (event.pointerId !== pointerId) return;
+      pointerId = null;
+      viewerImage.classList.remove('is-dragging');
+    };
+
+    viewerImage.addEventListener('pointerup', stopDragging);
+    viewerImage.addEventListener('pointercancel', stopDragging);
+    viewer.addEventListener('click', (event) => {
+      if (event.target === viewer || event.target === stage) viewer.close();
+    });
+  };
+
+  const initDynamicImages = () => {
+    initImageGalleries();
+    initImageViewer();
+  };
+
+  document.addEventListener('DOMContentLoaded', initDynamicImages);
+  document.addEventListener('astro:page-load', initDynamicImages);
+</script>

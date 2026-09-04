@@ -5,7 +5,6 @@ import { defineCollection, z } from 'astro:content';
 const dynamics = defineCollection({
   type: 'content',               // 内容类型：Markdown 文件
   schema: z.object({
-    layout: z.string().optional(), // 可选布局路径（如 MarkdownPostLayout）
     title: z.string(),            // 页面标题，如 '动态-2026-08-31-21-30'
     author: z.string(),           // 作者，如 'yirween'
     description: z.string(),      // 动态内容的纯文本摘要
