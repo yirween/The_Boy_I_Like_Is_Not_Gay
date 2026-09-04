@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Line from '../components/Line.astro';
+import MainText from '../components/MainText.astro';
+const raw = Astro.url?.pathname?.split('/').pop();
+const postName = raw ? decodeURIComponent(raw) : '';
+---
+
+<BaseLayout pageTitle = {postName}>
+    <MainText>
+        <slot />
+    </MainText>
+</BaseLayout>
+<!-- <style>
+    .post {
+        width: calc(100% - 40vw);
+        height: auto;
+        padding: 4vh 20% 20vh;
+        transition: transform .2s, padding .2s;
+    }
+</style> -->

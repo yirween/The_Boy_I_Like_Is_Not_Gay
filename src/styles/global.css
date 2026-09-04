@@ -1,4 +1,4 @@
-html, body {
+html {
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -6,6 +6,11 @@ html, body {
     overflow-x: hidden;
     color: #0f0e13;
     font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
 }
 
 /* 文本选择样式 */
@@ -383,6 +388,24 @@ html, body {
     border-radius: 8px;
     object-fit: cover;
 }
+
+/* ----------------------------- */
+/*            文章卡片            */
+/* ----------------------------- */
+.postCard {
+    width: 80%;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 3px #112d4e30;
+    background-color: #fdfdfd;
+    background-image: none !important;
+    color: #021216b9;
+    text-underline-offset: none;
+    text-decoration: none;
+    transition: box-shadow .3s, transform .3s, color .3s;
+}
+
 
 
 /* ----------------------------- */

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MainText from '../components/MainText.astro';
+
+interface Post {
+  url: string;
+  frontmatter: {
+    title: string;
+    pubDate?: string;    // 改为 pubDate，与 frontmatter 一致
+    draft?: boolean;
+  };
+}
+
+const allPosts = Object.values(
+  import.meta.glob('./posts/**/*.md', { eager: true })
+) as Post[];
+
+const sortedPosts = allPosts
+  .filter((post) => !post.frontmatter.draft)
+  .sort((a, b) => {
+    // 按 pubDate 降序（最新在前），若日期相同则按标题排序
+    const dateA = a.frontmatter.pubDate ?? '1970-01-01';
+    const dateB = b.frontmatter.pubDate ?? '1970-01-01';
+    const dateCompare = dateB.localeCompare(dateA); // 降序
+    if (dateCompare !== 0) return dateCompare;
+    return a.frontmatter.title.localeCompare(b.frontmatter.title);
+  });
+---
+<BaseLayout pageTitle="Blog">
+  <MainText>
+    {sortedPosts.map((post) => (
+      <a href={post.url} class="postCard">{post.frontmatter.title}</a>
+    ))}
+  </MainText>
+</BaseLayout>
