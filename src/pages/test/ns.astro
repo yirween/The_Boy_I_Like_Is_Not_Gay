@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pseudocode = `function factorial(n):
+  if n <= 1 [0.3, 0.7]:
+    result = 1
+  else:
+    result = n * factorial(n - 1)`;
+---
+
+<BaseLayout pageTitle="StruktoLab">
+  <section class="struktolab-page">
+    <header class="struktolab-header">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <h1>Strukto<span>Lab</span></h1>
+      <div class="header-spacer"></div>
+      <button id="share-btn" type="button" title="复制可分享的链接">分享</button>
+    </header>
+
+    <main class="struktolab-content">
+      <struktolab-editor id="editor" font-size="14" lang="en">
+        <script type="text/pseudocode" set:html={pseudocode}></script>
+      </struktolab-editor>
+
+      <section class="code-section" aria-label="生成的代码">
+        <div class="code-tabs" role="tablist">
+          <button class="active" type="button" data-lang="python" role="tab">Python</button>
+          <button type="button" data-lang="java" role="tab">Java</button>
+          <button type="button" data-lang="javascript" role="tab">JavaScript</button>
+        </div>
+        <pre class="code-output" id="code-output" aria-live="polite"></pre>
+      </section>
+
+      <footer class="struktolab-footer">
+        <span>StruktoLab</span>
+        <a href="https://github.com/openpatch/struktolab" target="_blank" rel="noreferrer">GitHub</a>
+      </footer>
+    </main>
+  </section>
+</BaseLayout>
+
+<script>
+  // @ts-nocheck
+  import { deflate, inflate } from 'pako';
+  import '../../assets/test/NS/struktolab/editor/index.js';
+  import { applyDocument, serializeDocument } from '../../assets/test/NS/struktolab/common/document.js';
+
+  const editor = document.querySelector('#editor');
+  const codeOutput = document.querySelector('#code-output');
+  const tabButtons = document.querySelectorAll('.code-tabs button');
+  let currentLanguage = 'python';
+
+  function loadFromHash() {
+    const hash = window.location.hash;
+    if (!hash || !hash.startsWith('#pako:')) return;
+    try {
+      const raw = atob(hash.slice(6).replace(/-/g, '+').replace(/_/g, '/'));
+      const bytes = Uint8Array.from(raw, (character) => character.charCodeAt(0));
+      applyDocument(editor, JSON.parse(inflate(bytes, { to: 'string' })));
+    } catch (error) {
+      console.error('StruktoLab: failed to load from URL hash', error);
+    }
+  }
+
+  function saveToHash() {
+    try {
+      const documentState = {
+        origin: window.location.origin + window.location.pathname,
+        ...serializeDocument(editor),
+      };
+      const compressed = deflate(new TextEncoder().encode(JSON.stringify(documentState)), { level: 9 });
+      let binary = '';
+      compressed.forEach((byte) => { binary += String.fromCharCode(byte); });
+      return `pako:${btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')}`;
+    } catch (error) {
+      console.error('StruktoLab: failed to serialize state', error);
+      return '';
+    }
+  }
+
+  function updateCode() {
+    try {
+      codeOutput.textContent = editor.toCode(currentLanguage);
+    } catch {
+      codeOutput.textContent = '';
+    }
+  }
+
+  customElements.whenDefined('struktolab-editor').then(() => {
+    loadFromHash();
+    updateCode();
+  });
+
+  editor.addEventListener('change', () => {
+    updateCode();
+    const hash = saveToHash();
+    if (hash) history.replaceState(null, '', `#${hash}`);
+  });
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      tabButtons.forEach((tab) => tab.classList.remove('active'));
+      button.classList.add('active');
+      currentLanguage = button.dataset.lang;
+      updateCode();
+    });
+  });
+
+  document.querySelector('#share-btn').addEventListener('click', async (event) => {
+    const hash = saveToHash();
+    if (!hash) return;
+    await navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}#${hash}`);
+    const button = event.currentTarget;
+    const originalText = button.textContent;
+    button.textContent = '已复制';
+    setTimeout(() => { button.textContent = originalText; }, 2000);
+  });
+
+  window.addEventListener('hashchange', loadFromHash);
+</script>
+
+<style>
+  .struktolab-page {
+    min-height: 100vh;
+    background: #f5f5f5;
+    color: #242428;
+  }
+
+  .struktolab-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    background: #004c45;
+    color: #fff;
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 2px solid #b5e3d9;
+    border-radius: 50%;
+    color: #b5e3d9;
+    font-weight: 700;
+  }
+
+  .struktolab-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .struktolab-header h1 span { color: #b5e3d9; }
+  .header-spacer { flex: 1; }
+
+  .struktolab-header button {
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+  }
+
+  .struktolab-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  struktolab-editor,
+  .code-section {
+    display: block;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  }
+
+  .code-section { margin-top: 16px; }
+
+  .code-tabs {
+    display: flex;
+    border-bottom: 1px solid #d6d6d6;
+    background: #f5f5f5;
+  }
+
+  .code-tabs button {
+    padding: 8px 18px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: #3c3c3c;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+  }
+
+  .code-tabs button.active {
+    border-bottom-color: #017460;
+    color: #004c45;
+    font-weight: 600;
+  }
+
+  .code-output {
+    min-height: 60px;
+    margin: 0;
+    padding: 16px;
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .struktolab-footer {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px 16px;
+    color: #777;
+    font-size: 13px;
+  }
+
+  .struktolab-footer a { color: #017460; }
+
+  @media (max-width: 640px) {
+    .struktolab-header { padding: 10px 12px; }
+    .struktolab-content { padding: 10px; }
+    .code-tabs button { flex: 1; padding: 8px 4px; }
+  }
+</style>
