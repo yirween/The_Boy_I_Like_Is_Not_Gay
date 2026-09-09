@@ -642,15 +642,15 @@ class StruktolabEditor extends HTMLElement {
   _buildToolbar() {
     /* History */
     const history = this._group("history");
-    this._undoBtn = this._button("↶", "Undo", "Undo (Ctrl+Z)", () => this.undo());
-    this._redoBtn = this._button("↷", "Redo", "Redo (Ctrl+Shift+Z)", () => this.redo());
+    this._undoBtn = this._button("↶", "撤销", "撤销 (Ctrl+Z)", () => this.undo());
+    this._redoBtn = this._button("↷", "恢复", "恢复 (Ctrl+Shift+Z)", () => this.redo());
     history.append(this._undoBtn, this._redoBtn);
     this._historyGroup = history;
     this._historySep = this._separator();
 
     /* View settings, behind one button */
     const view = this._group("view");
-    const viewBtn = this._button("⚙", "View", "Language, size, scale and colours");
+    const viewBtn = this._button("⚙", "视图设置", "Language, size, scale and colours");
     viewBtn.setAttribute("aria-haspopup", "true");
     viewBtn.setAttribute("aria-expanded", "false");
     viewBtn.addEventListener("click", () => this._toggleViewPopover());
@@ -662,10 +662,10 @@ class StruktolabEditor extends HTMLElement {
     /* Files and export */
     const file = this._group("file");
 
-    this._saveBtn = this._button("💾", "Save", "Save structogram as JSON", () =>
+    this._saveBtn = this._button("💾", "保存", "保存为工程文件，可再次载入", () =>
       this._downloadJSON(),
     );
-    this._loadBtn = this._button("📂", "Load", "Load structogram from JSON file", () =>
+    this._loadBtn = this._button("📂", "加载工程文件", "载入工程文件", () =>
       this._triggerLoadJSON(),
     );
     file.append(this._saveBtn, this._loadBtn);
@@ -678,8 +678,8 @@ class StruktolabEditor extends HTMLElement {
     file.appendChild(this._fileInput);
 
     file.append(
-      this._button("🖼", "PNG", "Export as PNG image", () => this._downloadImage("png")),
-      this._button("📐", "SVG", "Export as SVG image", () => this._downloadImage("svg")),
+      this._button("🖼", "导出为PNG格式的图片", "导出图片为PNG格式", () => this._downloadImage("png")),
+      this._button("📐", "导出为SVG格式的图片", "导出图片为SVG格式", () => this._downloadImage("svg")),
     );
 
     this._updateHistoryButtons();
@@ -701,14 +701,14 @@ class StruktolabEditor extends HTMLElement {
 
     const langSelect = document.createElement("select");
     langSelect.innerHTML =
-      '<option value="de">Deutsch</option><option value="en">English</option>';
+      '<option value="de">Deutsch</option><option value="en">中文</option>';
     langSelect.value = (this.getAttribute("lang") || "de").toLowerCase();
     langSelect.addEventListener("change", () => {
       this.setAttribute("lang", langSelect.value);
       this._keywords = null;
       this._onTreeChange();
     });
-    row("Language", langSelect);
+    row("语言", langSelect);
     this._langSelect = langSelect;
 
     const fsInput = document.createElement("input");
@@ -720,7 +720,7 @@ class StruktolabEditor extends HTMLElement {
       this.setAttribute("font-size", fsInput.value);
       this._onTreeChange();
     });
-    row("Font size", fsInput);
+    row("字体大小", fsInput);
     this._fsInput = fsInput;
 
     const scaleInput = document.createElement("input");
@@ -738,7 +738,7 @@ class StruktolabEditor extends HTMLElement {
       }
       this._onTreeChange();
     });
-    row("Scale", scaleInput);
+    row("表格大小", scaleInput);
     this._scaleInput = scaleInput;
 
     const colorModeSelect = document.createElement("select");
@@ -749,7 +749,7 @@ class StruktolabEditor extends HTMLElement {
       this.setAttribute("color-mode", colorModeSelect.value);
       this._onTreeChange();
     });
-    row("Colours", colorModeSelect);
+    row("颜色样式", colorModeSelect);
     this._colorModeSelect = colorModeSelect;
 
     return pop;
